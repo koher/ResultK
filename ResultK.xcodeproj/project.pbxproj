@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		D6A61BF91C3EC9B000FEFC5E /* ResultK.h in Headers */ = {isa = PBXBuildFile; fileRef = D6A61BF81C3EC9B000FEFC5E /* ResultK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6A61C001C3EC9B000FEFC5E /* ResultK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A61BF51C3EC9B000FEFC5E /* ResultK.framework */; };
-		D6A61C051C3EC9B000FEFC5E /* ResultKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A61C041C3EC9B000FEFC5E /* ResultKTests.swift */; };
+		D6A61C051C3EC9B000FEFC5E /* ResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A61C041C3EC9B000FEFC5E /* ResultTests.swift */; };
 		D6A61C101C3EC9C400FEFC5E /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A61C0F1C3EC9C400FEFC5E /* Result.swift */; };
 		D6A61C141C3ED34700FEFC5E /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A61C131C3ED34700FEFC5E /* Operators.swift */; };
 /* End PBXBuildFile section */
@@ -29,7 +29,7 @@
 		D6A61BF81C3EC9B000FEFC5E /* ResultK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResultK.h; sourceTree = "<group>"; };
 		D6A61BFA1C3EC9B000FEFC5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D6A61BFF1C3EC9B000FEFC5E /* ResultKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResultKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6A61C041C3EC9B000FEFC5E /* ResultKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultKTests.swift; sourceTree = "<group>"; };
+		D6A61C041C3EC9B000FEFC5E /* ResultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTests.swift; sourceTree = "<group>"; };
 		D6A61C061C3EC9B000FEFC5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D6A61C0F1C3EC9C400FEFC5E /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		D6A61C131C3ED34700FEFC5E /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 		D6A61C031C3EC9B000FEFC5E /* ResultKTests */ = {
 			isa = PBXGroup;
 			children = (
-				D6A61C041C3EC9B000FEFC5E /* ResultKTests.swift */,
+				D6A61C041C3EC9B000FEFC5E /* ResultTests.swift */,
 				D6A61C061C3EC9B000FEFC5E /* Info.plist */,
 			);
 			path = ResultKTests;
@@ -209,7 +209,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6A61C051C3EC9B000FEFC5E /* ResultKTests.swift in Sources */,
+				D6A61C051C3EC9B000FEFC5E /* ResultTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
