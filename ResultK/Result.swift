@@ -93,3 +93,10 @@ public func ??<Value>(lhs: Result<Value>, rhs: Value) -> Value {
 public func pure<Value>(value: Value) -> Result<Value> {
     return .Success(value)
 }
+
+public func tryr<T, Value>(f: T throws -> Value) -> T -> Result<Value> {
+    func result(t: T) -> Result<Value> { // Cannot compile with the closure expression by an unknown reason
+        return Result(try f(t))
+    }
+    return result
+}
