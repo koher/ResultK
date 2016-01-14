@@ -86,8 +86,8 @@ public func <*><Value, U>(lhs: Result<Value -> U>, rhs: Result<Value>) -> Result
     return rhs.apply(lhs)
 }
 
-public func ??<Value>(lhs: Result<Value>, rhs: Value) -> Value {
-    return lhs.value ?? rhs
+public func ??<Value>(lhs: Result<Value>, @autoclosure rhs: () -> Value) -> Value {
+    return lhs.value ?? rhs()
 }
 
 public func pure<Value>(value: Value) -> Result<Value> {
