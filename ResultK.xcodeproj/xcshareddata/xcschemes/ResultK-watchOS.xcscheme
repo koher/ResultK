@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D6A61BF41C3EC9B000FEFC5E"
+               BlueprintIdentifier = "D64B8F3D1C48044300B81B78"
                BuildableName = "ResultK.framework"
-               BlueprintName = "ResultK"
+               BlueprintName = "ResultK-watchOS"
                ReferencedContainer = "container:ResultK.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,26 +28,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D6A61BFE1C3EC9B000FEFC5E"
-               BuildableName = "ResultKTests.xctest"
-               BlueprintName = "ResultKTests"
-               ReferencedContainer = "container:ResultK.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D6A61BF41C3EC9B000FEFC5E"
-            BuildableName = "ResultK.framework"
-            BlueprintName = "ResultK"
-            ReferencedContainer = "container:ResultK.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -64,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D6A61BF41C3EC9B000FEFC5E"
+            BlueprintIdentifier = "D64B8F3D1C48044300B81B78"
             BuildableName = "ResultK.framework"
-            BlueprintName = "ResultK"
+            BlueprintName = "ResultK-watchOS"
             ReferencedContainer = "container:ResultK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -82,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D6A61BF41C3EC9B000FEFC5E"
+            BlueprintIdentifier = "D64B8F3D1C48044300B81B78"
             BuildableName = "ResultK.framework"
-            BlueprintName = "ResultK"
+            BlueprintName = "ResultK-watchOS"
             ReferencedContainer = "container:ResultK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
