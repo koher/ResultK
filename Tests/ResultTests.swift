@@ -526,3 +526,39 @@ private struct Error: ErrorType {
 private func curry<T, U, V>(f: (T, U) -> V) -> T -> U -> V {
     return { t in { u in f(t, u) } }
 }
+
+extension ResultTests {
+    func testSample() {
+        func primeOrFailure(x: Int) -> Result<Int> {
+            guard [2, 3, 5, 7, 11].contains(x) else {
+                return Result(error: Error())
+            }
+            return Result(x)
+        }
+        func primeOrThrow(x: Int) throws -> Int {
+            guard [2, 3, 5, 7, 11].contains(x) else {
+                throw Error()
+            }
+            return x
+        }
+        
+        let a: Result<Int> = Result(try primeOrThrow(2))
+        switch a {
+        case let .Success(value):
+            print(value)
+        case let .Failure(error):
+            print(error)
+        }
+        
+        // let b: Result<Int> = tryr primeOrThrow(3)
+        let b: Result<Int> = tryr(primeOrThrow)(3)
+
+        let sum1: Result<Int> = a.flatMap { a in b.map { b in a + b } }
+        let sum2: Result<Int> = a >>- { a in  b >>- { b in  pure(a + b) } }
+        let sum3: Result<Int> = curry(+) <^> a <*> b
+        
+        print(sum1)
+        print(sum2)
+        print(sum3)
+    }
+}
