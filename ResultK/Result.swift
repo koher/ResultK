@@ -59,6 +59,17 @@ extension Result {
     }
 }
 
+extension Result {
+    public func recover(f: ErrorType -> Result<Value>) -> Result<Value> {
+        switch self {
+        case .Success:
+            return self
+        case let .Failure(error):
+            return f(error)
+        }
+    }
+}
+
 public func >>-<Value, U>(lhs: Result<Value>, rhs: Value -> Result<U>) -> Result<U> {
     return lhs.flatMap(rhs)
 }
