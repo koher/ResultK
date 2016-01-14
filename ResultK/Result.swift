@@ -12,6 +12,10 @@ extension Result {
         }
     }
     
+    public init(error: ErrorType) {
+        self = .Failure(error)
+    }
+    
     public var value: Value? {
         switch self {
         case let .Success(value):
