@@ -3,7 +3,7 @@ import XCTest
 
 class ResultTests: XCTestCase {
     func testInit() {
-        if true {
+        do {
             let r: Result<Int> = Result(2)
             switch r {
             case let .Success(value):
@@ -13,7 +13,7 @@ class ResultTests: XCTestCase {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = Result(try failableGetInt(2))
             switch r {
             case let .Success(value):
@@ -23,7 +23,7 @@ class ResultTests: XCTestCase {
             }
         }
 
-        if true {
+        do {
             let r: Result<Int> = Result(try failableGetInt(3))
             switch r {
             case .Success:
@@ -49,7 +49,7 @@ class ResultTests: XCTestCase {
     }
     
     func testValue() {
-        if true {
+        do {
             let r: Result<Int> = Result(2)
             if let value = r.value {
                 XCTAssertEqual(value, 2)
@@ -58,7 +58,7 @@ class ResultTests: XCTestCase {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = Result(error: Error())
             if let _ = r.value {
                 XCTFail()
@@ -67,14 +67,14 @@ class ResultTests: XCTestCase {
     }
     
     func testError() {
-        if true {
+        do {
             let r: Result<Int> = Result(2)
             if let _ = r.error {
                 XCTFail()
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = Result(error: Error())
             if let _ = r.error { // Cannot use `guard` because its body does not fall through
             } else {
@@ -86,7 +86,7 @@ class ResultTests: XCTestCase {
 
 extension ResultTests {
     func testMap() {
-        if true {
+        do {
             let r: Result<Int> = Result(2).map { $0 * $0 }
             switch r {
             case let .Success(value):
@@ -96,7 +96,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = Result(error: Error(message: "a")).map { $0 * $0 }
             switch r {
             case .Success:
@@ -110,7 +110,7 @@ extension ResultTests {
     }
     
     func testFlatMap() {
-        if true {
+        do {
             let r: Result<Int> = Result(2).flatMap { Result($0 * $0) }
             switch r {
             case let .Success(value):
@@ -120,7 +120,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = Result(2).flatMap { _ in Result(error: Error(message: "b")) }
             switch r {
             case .Success:
@@ -132,7 +132,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = Result(error: Error(message:  "a")).flatMap { Result($0 * $0) }
             switch r {
             case .Success:
@@ -144,7 +144,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = Result<Int>(error: Error(message: "a")).flatMap { _ in Result(error: Error(message: "b:")) }
             switch r {
             case .Success:
@@ -158,7 +158,7 @@ extension ResultTests {
     }
     
     func testApply() {
-        if true {
+        do {
             let a: Result<Int> = Result(2)
             let r: Result<Int> = a.apply(pure({ $0 * $0 }))
             switch r {
@@ -169,7 +169,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let a: Result<Int> = Result(2)
             let r: Result<Int> = a.apply(Result(error: Error(message: "f")))
             switch r {
@@ -182,7 +182,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let a: Result<Int> = Result(error: Error(message: "a"))
             let r: Result<Int> = a.apply(pure({ $0 * $0 }))
             switch r {
@@ -196,7 +196,7 @@ extension ResultTests {
         }
 
         
-        if true {
+        do {
             let a: Result<Int> = Result(error: Error(message: "a"))
             let r: Result<Int> = a.apply(Result(error: Error(message: "f")))
             switch r {
@@ -213,7 +213,7 @@ extension ResultTests {
 
 extension ResultTests {
     func testRecover() {
-        if true {
+        do {
             let a: Result<Int> = Result(2)
             let r: Result<Int> = a.recover { error in
                 XCTFail()
@@ -227,7 +227,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let a: Result<Int> = Result(error: Error(message: "a"))
             let r: Result<Int> = a.recover { error in
                 switch error {
@@ -246,7 +246,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let a: Result<Int> = Result(error: Error(message: "a"))
             let r: Result<Int> = a.recover { error in
                 switch error {
@@ -271,7 +271,7 @@ extension ResultTests {
 
 extension ResultTests {
     func testFlatMapOperator() {
-        if true {
+        do {
             let r: Result<Int> = Result(2) >>- { Result($0 * $0) }
             switch r {
             case let .Success(value):
@@ -281,7 +281,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = Result(2) >>- { _ in Result(error: Error(message: "b")) }
             switch r {
             case .Success:
@@ -293,7 +293,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = Result(error: Error(message:  "a")) >>- { Result($0 * $0) }
             switch r {
             case .Success:
@@ -305,7 +305,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = Result<Int>(error: Error(message: "a")) >>- { _ in Result(error: Error(message: "b:")) }
             switch r {
             case .Success:
@@ -319,7 +319,7 @@ extension ResultTests {
     }
     
     func testFlippedFlatMapOperator() {
-        if true {
+        do {
             let r: Result<Int> = { Result($0 * $0) } -<< Result(2)
             switch r {
             case let .Success(value):
@@ -329,7 +329,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = { _ in Result(error: Error(message: "b")) } -<< Result(2)
             switch r {
             case .Success:
@@ -341,7 +341,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = { Result($0 * $0) } -<< Result(error: Error(message:  "a"))
             switch r {
             case .Success:
@@ -353,7 +353,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = { _ in Result(error: Error(message: "b:")) } -<< Result<Int>(error: Error(message: "a"))
             switch r {
             case .Success:
@@ -367,7 +367,7 @@ extension ResultTests {
     }
     
     func testMapOperator() {
-        if true {
+        do {
             let r: Result<Int> = { $0 * $0 } <^> Result(2)
             switch r {
             case let .Success(value):
@@ -377,7 +377,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = { $0 * $0 } <^> Result(error: Error(message: "a"))
             switch r {
             case .Success:
@@ -391,7 +391,7 @@ extension ResultTests {
     }
     
     func testApplyOperator() {
-        if true {
+        do {
             let a: Result<Int> = Result(2)
             let b: Result<Int> = Result(3)
             let r: Result<Int> = pure(curry(+)) <*> a <*> b
@@ -403,7 +403,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let a: Result<Int> = Result(2)
             let b: Result<Int> = Result(error: Error(message: "b"))
             let r: Result<Int> = pure(curry(+)) <*> a <*> b
@@ -417,7 +417,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let a: Result<Int> = Result(error: Error(message: "a"))
             let b: Result<Int> = Result(3)
             let r: Result<Int> = pure(curry(+)) <*> a <*> b
@@ -431,7 +431,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let a: Result<Int> = Result(error: Error(message: "a"))
             let b: Result<Int> = Result(error: Error(message: "b"))
             let r: Result<Int> = pure(curry(+)) <*> a <*> b
@@ -449,13 +449,13 @@ extension ResultTests {
 
 extension ResultTests {
     func testFailureCoalescingOperator() {
-        if true {
+        do {
             let a: Result<Int> = Result(2)
             let r: Int = a ?? 3
             XCTAssertEqual(r, 2)
         }
         
-        if true {
+        do {
             let a: Result<Int> = Result(error: Error())
             let r: Int = a ?? 3
             XCTAssertEqual(r, 3)
@@ -466,7 +466,7 @@ extension ResultTests {
 
 extension ResultTests {
     func testPure() {
-        if true {
+        do {
             let r: Result<Int> = pure(2)
             switch r {
             case let .Success(value):
@@ -480,7 +480,7 @@ extension ResultTests {
 
 extension ResultTests {
     func testTryr() {
-        if true {
+        do {
             let r: Result<Int> = tryr(failableGetInt)(2)
             switch r {
             case let .Success(value):
@@ -490,7 +490,7 @@ extension ResultTests {
             }
         }
         
-        if true {
+        do {
             let r: Result<Int> = tryr(failableGetInt)(3)
             switch r {
             case .Success:
