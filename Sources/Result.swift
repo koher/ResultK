@@ -1,101 +1,101 @@
 public enum Result<Value> {
-    case Success(Value)
-    case Failure(ErrorType)
+    case success(Value)
+    case failure(Error)
 }
 
 extension Result {
-    public init(@autoclosure _ f: () throws -> Value) {
+    public init(_ f: @autoclosure () throws -> Value) {
         do {
-            self = .Success(try f())
+            self = .success(try f())
         } catch let error {
-            self = .Failure(error)
+            self = .failure(error)
         }
     }
     
-    public init(error: ErrorType) {
-        self = .Failure(error)
+    public init(error: Error) {
+        self = .failure(error)
     }
     
     public var value: Value? {
         switch self {
-        case let .Success(value):
-            return .Some(value)
-        case .Failure:
-            return .None
+        case let .success(value):
+            return .some(value)
+        case .failure:
+            return .none
         }
     }
     
-    public var error: ErrorType? {
+    public var error: Error? {
         switch self {
-        case .Success:
-            return .None
-        case let .Failure(error):
-            return .Some(error)
+        case .success:
+            return .none
+        case let .failure(error):
+            return .some(error)
         }
     }
 }
 
 extension Result {
-    public func map<U>(f: Value -> U) -> Result<U> {
+    public func map<U>(_ f: (Value) -> U) -> Result<U> {
         switch self {
-        case let .Success(value):
-            return .Success(f(value))
-        case let .Failure(error):
-            return .Failure(error)
+        case let .success(value):
+            return .success(f(value))
+        case let .failure(error):
+            return .failure(error)
         }
     }
     
-    public func flatMap<U>(f: Value -> Result<U>) -> Result<U> {
+    public func flatMap<U>(_ f: (Value) -> Result<U>) -> Result<U> {
         switch self {
-        case let .Success(value):
+        case let .success(value):
             return f(value)
-        case let .Failure(error):
-            return .Failure(error)
+        case let .failure(error):
+            return .failure(error)
         }
     }
     
-    public func apply<U>(f: Result<Value -> U>) -> Result<U> {
+    public func apply<U>(_ f: Result<(Value) -> U>) -> Result<U> {
         return f.flatMap { f in self.map { f($0) } }
     }
 }
 
 extension Result {
-    public func recover(f: ErrorType -> Result<Value>) -> Result<Value> {
+    public func recover(_ f: (Error) -> Result<Value>) -> Result<Value> {
         switch self {
-        case .Success:
+        case .success:
             return self
-        case let .Failure(error):
+        case let .failure(error):
             return f(error)
         }
     }
 }
 
-public func >>-<Value, U>(lhs: Result<Value>, rhs: Value -> Result<U>) -> Result<U> {
+public func >>-<Value, U>(lhs: Result<Value>, rhs: (Value) -> Result<U>) -> Result<U> {
     return lhs.flatMap(rhs)
 }
 
-public func -<<<Value, U>(lhs: Value -> Result<U>, rhs: Result<Value>) -> Result<U> {
+public func -<<<Value, U>(lhs: (Value) -> Result<U>, rhs: Result<Value>) -> Result<U> {
     return rhs.flatMap(lhs)
 }
 
-public func <^><Value, U>(lhs: Value -> U, rhs: Result<Value>) -> Result<U> {
+public func <^><Value, U>(lhs: (Value) -> U, rhs: Result<Value>) -> Result<U> {
     return rhs.map(lhs)
 }
 
-public func <*><Value, U>(lhs: Result<Value -> U>, rhs: Result<Value>) -> Result<U> {
+public func <*><Value, U>(lhs: Result<(Value) -> U>, rhs: Result<Value>) -> Result<U> {
     return rhs.apply(lhs)
 }
 
-public func ??<Value>(lhs: Result<Value>, @autoclosure rhs: () -> Value) -> Value {
+public func ??<Value>(lhs: Result<Value>, rhs: @autoclosure () -> Value) -> Value {
     return lhs.value ?? rhs()
 }
 
-public func pure<Value>(value: Value) -> Result<Value> {
-    return .Success(value)
+public func pure<Value>(_ value: Value) -> Result<Value> {
+    return .success(value)
 }
 
-public func tryr<T, Value>(f: T throws -> Value) -> T -> Result<Value> {
-    func result(t: T) -> Result<Value> { // Cannot compile with the closure expression by an unknown reason
+public func tryr<T, Value>(_ f: @escaping (T) throws -> Value) -> (T) -> Result<Value> {
+    func result(_ t: T) -> Result<Value> { // Cannot compile with the closure expression by an unknown reason
         return Result(try f(t))
     }
     return result

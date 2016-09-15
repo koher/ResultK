@@ -6,9 +6,9 @@ class ResultTests: XCTestCase {
         do {
             let r: Result<Int> = Result(2)
             switch r {
-            case let .Success(value):
+            case let .success(value):
                 XCTAssertEqual(value, 2)
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -16,9 +16,9 @@ class ResultTests: XCTestCase {
         do {
             let r: Result<Int> = Result(try failableGetInt(2))
             switch r {
-            case let .Success(value):
+            case let .success(value):
                 XCTAssertEqual(value, 2)
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -26,11 +26,11 @@ class ResultTests: XCTestCase {
         do {
             let r: Result<Int> = Result(try failableGetInt(3))
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "3")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -39,11 +39,11 @@ class ResultTests: XCTestCase {
     func testInitError() {
         let r: Result<Int> = Result(error: Error(message: "a"))
         switch r {
-        case .Success:
+        case .success:
             XCTFail()
-        case let .Failure(error as Error):
+        case let .failure(error as Error):
             XCTAssertEqual(error.message, "a")
-        case .Failure:
+        case .failure:
             XCTFail()
         }
     }
@@ -89,9 +89,9 @@ extension ResultTests {
         do {
             let r: Result<Int> = Result(2).map { $0 * $0 }
             switch r {
-            case let .Success(value):
+            case let .success(value):
                 XCTAssertEqual(value, 4)
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -99,11 +99,11 @@ extension ResultTests {
         do {
             let r: Result<Int> = Result(error: Error(message: "a")).map { $0 * $0 }
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "a")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -113,9 +113,9 @@ extension ResultTests {
         do {
             let r: Result<Int> = Result(2).flatMap { Result($0 * $0) }
             switch r {
-            case let .Success(value):
+            case let .success(value):
                 XCTAssertEqual(value, 4)
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -123,11 +123,11 @@ extension ResultTests {
         do {
             let r: Result<Int> = Result(2).flatMap { _ in Result(error: Error(message: "b")) }
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "b")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -135,11 +135,11 @@ extension ResultTests {
         do {
             let r: Result<Int> = Result(error: Error(message:  "a")).flatMap { Result($0 * $0) }
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "a")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -147,11 +147,11 @@ extension ResultTests {
         do {
             let r: Result<Int> = Result<Int>(error: Error(message: "a")).flatMap { _ in Result(error: Error(message: "b:")) }
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "a")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -162,9 +162,9 @@ extension ResultTests {
             let a: Result<Int> = Result(2)
             let r: Result<Int> = a.apply(pure({ $0 * $0 }))
             switch r {
-            case let .Success(value):
+            case let .success(value):
                 XCTAssertEqual(value, 4)
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -173,11 +173,11 @@ extension ResultTests {
             let a: Result<Int> = Result(2)
             let r: Result<Int> = a.apply(Result(error: Error(message: "f")))
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "f")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -186,11 +186,11 @@ extension ResultTests {
             let a: Result<Int> = Result(error: Error(message: "a"))
             let r: Result<Int> = a.apply(pure({ $0 * $0 }))
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "a")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -200,11 +200,11 @@ extension ResultTests {
             let a: Result<Int> = Result(error: Error(message: "a"))
             let r: Result<Int> = a.apply(Result(error: Error(message: "f")))
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "f")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -220,9 +220,9 @@ extension ResultTests {
                 return Result(error: Error())
             }
             switch r {
-            case let .Success(value):
+            case let .success(value):
                 XCTAssertEqual(value, 2)
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -239,9 +239,9 @@ extension ResultTests {
                 return Result(2)
             }
             switch r {
-            case let .Success(value):
+            case let .success(value):
                 XCTAssertEqual(value, 2)
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -258,11 +258,11 @@ extension ResultTests {
                 return Result(error: Error(message: "b"))
             }
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "b")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -274,9 +274,9 @@ extension ResultTests {
         do {
             let r: Result<Int> = Result(2) >>- { Result($0 * $0) }
             switch r {
-            case let .Success(value):
+            case let .success(value):
                 XCTAssertEqual(value, 4)
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -284,11 +284,11 @@ extension ResultTests {
         do {
             let r: Result<Int> = Result(2) >>- { _ in Result(error: Error(message: "b")) }
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "b")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -296,11 +296,11 @@ extension ResultTests {
         do {
             let r: Result<Int> = Result(error: Error(message:  "a")) >>- { Result($0 * $0) }
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "a")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -308,11 +308,11 @@ extension ResultTests {
         do {
             let r: Result<Int> = Result<Int>(error: Error(message: "a")) >>- { _ in Result(error: Error(message: "b:")) }
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "a")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -322,9 +322,9 @@ extension ResultTests {
         do {
             let r: Result<Int> = { Result($0 * $0) } -<< Result(2)
             switch r {
-            case let .Success(value):
+            case let .success(value):
                 XCTAssertEqual(value, 4)
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -332,11 +332,11 @@ extension ResultTests {
         do {
             let r: Result<Int> = { _ in Result(error: Error(message: "b")) } -<< Result(2)
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "b")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -344,11 +344,11 @@ extension ResultTests {
         do {
             let r: Result<Int> = { Result($0 * $0) } -<< Result(error: Error(message:  "a"))
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "a")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -356,11 +356,11 @@ extension ResultTests {
         do {
             let r: Result<Int> = { _ in Result(error: Error(message: "b:")) } -<< Result<Int>(error: Error(message: "a"))
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "a")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -370,9 +370,9 @@ extension ResultTests {
         do {
             let r: Result<Int> = { $0 * $0 } <^> Result(2)
             switch r {
-            case let .Success(value):
+            case let .success(value):
                 XCTAssertEqual(value, 4)
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -380,11 +380,11 @@ extension ResultTests {
         do {
             let r: Result<Int> = { $0 * $0 } <^> Result(error: Error(message: "a"))
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "a")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -396,9 +396,9 @@ extension ResultTests {
             let b: Result<Int> = Result(3)
             let r: Result<Int> = pure(curry(+)) <*> a <*> b
             switch r {
-            case let .Success(value):
+            case let .success(value):
                 XCTAssertEqual(value, 5)
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -408,11 +408,11 @@ extension ResultTests {
             let b: Result<Int> = Result(error: Error(message: "b"))
             let r: Result<Int> = pure(curry(+)) <*> a <*> b
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "b")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -422,11 +422,11 @@ extension ResultTests {
             let b: Result<Int> = Result(3)
             let r: Result<Int> = pure(curry(+)) <*> a <*> b
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "a")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -436,11 +436,11 @@ extension ResultTests {
             let b: Result<Int> = Result(error: Error(message: "b"))
             let r: Result<Int> = pure(curry(+)) <*> a <*> b
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "a")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -469,9 +469,9 @@ extension ResultTests {
         do {
             let r: Result<Int> = pure(2)
             switch r {
-            case let .Success(value):
+            case let .success(value):
                 XCTAssertEqual(value, 2)
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -483,9 +483,9 @@ extension ResultTests {
         do {
             let r: Result<Int> = tryr(failableGetInt)(2)
             switch r {
-            case let .Success(value):
+            case let .success(value):
                 XCTAssertEqual(value, 2)
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
@@ -493,25 +493,25 @@ extension ResultTests {
         do {
             let r: Result<Int> = tryr(failableGetInt)(3)
             switch r {
-            case .Success:
+            case .success:
                 XCTFail()
-            case let .Failure(error as Error):
+            case let .failure(error as Error):
                 XCTAssertEqual(error.message, "3")
-            case .Failure:
+            case .failure:
                 XCTFail()
             }
         }
     }
 }
 
-private func failableGetInt(x: Int) throws -> Int {
+private func failableGetInt(_ x: Int) throws -> Int {
     guard x % 2 == 0 else {
         throw Error(message: "\(x)")
     }
     return x
 }
 
-private struct Error: ErrorType {
+private struct Error: Error {
     let message: String
     
     init(message: String) {
@@ -523,19 +523,19 @@ private struct Error: ErrorType {
     }
 }
 
-private func curry<T, U, V>(f: (T, U) -> V) -> T -> U -> V {
+private func curry<T, U, V>(_ f: @escaping (T, U) -> V) -> (T) -> (U) -> V {
     return { t in { u in f(t, u) } }
 }
 
 extension ResultTests {
     func testSample() {
-        func primeOrFailure(x: Int) -> Result<Int> {
+        func primeOrFailure(_ x: Int) -> Result<Int> {
             guard [2, 3, 5, 7, 11].contains(x) else {
                 return Result(error: Error())
             }
             return Result(x)
         }
-        func primeOrThrow(x: Int) throws -> Int {
+        func primeOrThrow(_ x: Int) throws -> Int {
             guard [2, 3, 5, 7, 11].contains(x) else {
                 throw Error()
             }
@@ -544,9 +544,9 @@ extension ResultTests {
         
         let a: Result<Int> = Result(try primeOrThrow(2))
         switch a {
-        case let .Success(value):
+        case let .success(value):
             print(value)
-        case let .Failure(error):
+        case let .failure(error):
             print(error)
         }
         
