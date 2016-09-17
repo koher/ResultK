@@ -513,20 +513,20 @@ class ResultKTests: XCTestCase {
     
     static var allTests: [(String, (ResultKTests) -> () throws -> Void)] {
         return [
-            ("testSample", testInit),
-            ("testSample", testInitError),
-            ("testSample", testValue),
-            ("testSample", testError),
+            ("testInit", testInit),
+            ("testInitError", testInitError),
+            ("testValue", testValue),
+            ("testError", testError),
             ("testUnwrapped", testUnwrapped),
-            ("testSample", testMap),
-            ("testSample", testFlatMap),
-            ("testSample", testApply),
-            ("testSample", testRecover),
-            ("testSample", testFlatMapLeftOperator),
-            ("testSample", testFlatMapRightOperator),
-            ("testSample", testMapOperator),
-            ("testSample", testApplyOperator),
-            ("testSample", testFailureCoalescingOperator),
+            ("testMap", testMap),
+            ("testFlatMap", testFlatMap),
+            ("testApply", testApply),
+            ("testRecover", testRecover),
+            ("testFlatMapLeftOperator", testFlatMapLeftOperator),
+            ("testFlatMapRightOperator", testFlatMapRightOperator),
+            ("testMapOperator", testMapOperator),
+            ("testApplyOperator", testApplyOperator),
+            ("testFailureCoalescingOperator", testFailureCoalescingOperator),
             ("testSample", testSample),
         ]
     }
