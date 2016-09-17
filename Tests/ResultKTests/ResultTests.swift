@@ -1,7 +1,7 @@
 import XCTest
 @testable import ResultK
 
-class ResultTests: XCTestCase {
+class ResultKTests: XCTestCase {
     func testInit() {
         do {
             let r: Result<Int> = Result(2)
@@ -22,7 +22,7 @@ class ResultTests: XCTestCase {
                 XCTFail()
             }
         }
-
+        
         do {
             let r: Result<Int> = Result(try failableGetInt(3))
             switch r {
@@ -82,9 +82,7 @@ class ResultTests: XCTestCase {
             }
         }
     }
-}
-
-extension ResultTests {
+    
     func testMap() {
         do {
             let r: Result<Int> = Result(2).map { $0 * $0 }
@@ -194,7 +192,7 @@ extension ResultTests {
                 XCTFail()
             }
         }
-
+        
         
         do {
             let a: Result<Int> = Result(error: MyError(message: "a"))
@@ -209,9 +207,7 @@ extension ResultTests {
             }
         }
     }
-}
 
-extension ResultTests {
     func testRecover() {
         do {
             let a: Result<Int> = Result(2)
@@ -267,10 +263,8 @@ extension ResultTests {
             }
         }
     }
-}
 
-extension ResultTests {
-    func testFlatMapOperator() {
+    func testFlatMapLeftOperator() {
         do {
             let r: Result<Int> = Result(2) >>- { Result($0 * $0) }
             switch r {
@@ -318,7 +312,7 @@ extension ResultTests {
         }
     }
     
-    func testFlippedFlatMapOperator() {
+    func testFlatMapRightOperator() {
         do {
             let r: Result<Int> = { Result($0 * $0) } -<< Result(2)
             switch r {
@@ -445,9 +439,7 @@ extension ResultTests {
             }
         }
     }
-}
 
-extension ResultTests {
     func testFailureCoalescingOperator() {
         do {
             let a: Result<Int> = Result(2)
@@ -462,9 +454,6 @@ extension ResultTests {
         }
     }
     
-}
-
-extension ResultTests {
     func testPure() {
         do {
             let r: Result<Int> = pure(2)
@@ -476,9 +465,7 @@ extension ResultTests {
             }
         }
     }
-}
 
-extension ResultTests {
     func testTryr() {
         do {
             let r: Result<Int> = tryr(failableGetInt)(2)
@@ -501,6 +488,61 @@ extension ResultTests {
                 XCTFail()
             }
         }
+    }
+
+    func testSample() {
+        func primeOrFailure(_ x: Int) -> Result<Int> {
+            guard [2, 3, 5, 7, 11].contains(x) else {
+                return Result(error: MyError())
+            }
+            return Result(x)
+        }
+        func primeOrThrow(_ x: Int) throws -> Int {
+            guard [2, 3, 5, 7, 11].contains(x) else {
+                throw MyError()
+            }
+            return x
+        }
+        
+        let a: Result<Int> = Result(try primeOrThrow(2))
+        switch a {
+        case let .success(value):
+            print(value)
+        case let .failure(error):
+            print(error)
+        }
+        
+        // let b: Result<Int> = tryr primeOrThrow(3)
+        let b: Result<Int> = tryr(primeOrThrow)(3)
+        
+        let sum1: Result<Int> = a.flatMap { a in b.map { b in a + b } }
+        let sum2: Result<Int> = a >>- { a in  b >>- { b in  pure(a + b) } }
+        let sum3: Result<Int> = curry(+) <^> a <*> b
+        
+        print(sum1)
+        print(sum2)
+        print(sum3)
+    }
+    
+    static var allTests: [(String, (ResultKTests) -> () throws -> Void)] {
+        return [
+            ("testSample", testInit),
+            ("testSample", testInitError),
+            ("testSample", testValue),
+            ("testSample", testError),
+            ("testSample", testMap),
+            ("testSample", testFlatMap),
+            ("testSample", testApply),
+            ("testSample", testRecover),
+            ("testSample", testFlatMapLeftOperator),
+            ("testSample", testFlatMapRightOperator),
+            ("testSample", testMapOperator),
+            ("testSample", testApplyOperator),
+            ("testSample", testFailureCoalescingOperator),
+            ("testSample", testPure),
+            ("testSample", testTryr),
+            ("testSample", testSample),
+        ]
     }
 }
 
@@ -527,38 +569,3 @@ private func curry<T, U, V>(_ f: @escaping (T, U) -> V) -> (T) -> (U) -> V {
     return { t in { u in f(t, u) } }
 }
 
-extension ResultTests {
-    func testSample() {
-        func primeOrFailure(_ x: Int) -> Result<Int> {
-            guard [2, 3, 5, 7, 11].contains(x) else {
-                return Result(error: MyError())
-            }
-            return Result(x)
-        }
-        func primeOrThrow(_ x: Int) throws -> Int {
-            guard [2, 3, 5, 7, 11].contains(x) else {
-                throw MyError()
-            }
-            return x
-        }
-        
-        let a: Result<Int> = Result(try primeOrThrow(2))
-        switch a {
-        case let .success(value):
-            print(value)
-        case let .failure(error):
-            print(error)
-        }
-        
-        // let b: Result<Int> = tryr primeOrThrow(3)
-        let b: Result<Int> = tryr(primeOrThrow)(3)
-
-        let sum1: Result<Int> = a.flatMap { a in b.map { b in a + b } }
-        let sum2: Result<Int> = a >>- { a in  b >>- { b in  pure(a + b) } }
-        let sum3: Result<Int> = curry(+) <^> a <*> b
-        
-        print(sum1)
-        print(sum2)
-        print(sum3)
-    }
-}
