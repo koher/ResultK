@@ -232,10 +232,10 @@ class ResultKTests: XCTestCase {
         }
     }
 
-    func testRecover() {
+    func testRecovered() {
         do {
             let a: Result<Int> = Result(2)
-            let r: Result<Int> = a.recover { error in
+            let r: Result<Int> = a.recovered { error in
                 XCTFail()
                 return Result(error: MyError())
             }
@@ -249,7 +249,7 @@ class ResultKTests: XCTestCase {
         
         do {
             let a: Result<Int> = Result(error: MyError(message: "a"))
-            let r: Result<Int> = a.recover { error in
+            let r: Result<Int> = a.recovered { error in
                 switch error {
                 case let error as MyError:
                     XCTAssertEqual(error.message, "a")
@@ -268,7 +268,7 @@ class ResultKTests: XCTestCase {
         
         do {
             let a: Result<Int> = Result(error: MyError(message: "a"))
-            let r: Result<Int> = a.recover { error in
+            let r: Result<Int> = a.recovered { error in
                 switch error {
                 case let error as MyError:
                     XCTAssertEqual(error.message, "a")
@@ -521,7 +521,7 @@ class ResultKTests: XCTestCase {
             ("testMap", testMap),
             ("testFlatMap", testFlatMap),
             ("testApply", testApply),
-            ("testRecover", testRecover),
+            ("testRecovered", testRecovered),
             ("testFlatMapLeftOperator", testFlatMapLeftOperator),
             ("testFlatMapRightOperator", testFlatMapRightOperator),
             ("testMapOperator", testMapOperator),

@@ -71,7 +71,7 @@ extension Result {
 }
 
 extension Result {
-    public func recover(_ f: (Error) -> Result<Value>) -> Result<Value> {
+    public func recovered(_ f: (Error) -> Result<Value>) -> Result<Value> {
         switch self {
         case .success:
             return self
