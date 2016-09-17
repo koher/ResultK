@@ -93,10 +93,3 @@ public func ??<Value>(lhs: Result<Value>, rhs: @autoclosure () -> Value) -> Valu
 public func pure<Value>(_ value: Value) -> Result<Value> {
     return .success(value)
 }
-
-public func tryr<T, Value>(_ f: @escaping (T) throws -> Value) -> (T) -> Result<Value> {
-    func result(_ t: T) -> Result<Value> { // Cannot compile with the closure expression by an unknown reason
-        return Result(try f(t))
-    }
-    return result
-}

@@ -466,30 +466,6 @@ class ResultKTests: XCTestCase {
         }
     }
 
-    func testTryr() {
-        do {
-            let r: Result<Int> = tryr(failableGetInt)(2)
-            switch r {
-            case let .success(value):
-                XCTAssertEqual(value, 2)
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        do {
-            let r: Result<Int> = tryr(failableGetInt)(3)
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "3")
-            case .failure:
-                XCTFail()
-            }
-        }
-    }
-
     func testSample() {
         func primeOrFailure(_ x: Int) -> Result<Int> {
             guard [2, 3, 5, 7, 11].contains(x) else {
@@ -512,8 +488,7 @@ class ResultKTests: XCTestCase {
             print(error)
         }
         
-        // let b: Result<Int> = tryr primeOrThrow(3)
-        let b: Result<Int> = tryr(primeOrThrow)(3)
+        let b: Result<Int> = Result(3)
         
         let sum1: Result<Int> = a.flatMap { a in b.map { b in a + b } }
         let sum2: Result<Int> = a >>- { a in  b >>- { b in  pure(a + b) } }
@@ -540,7 +515,6 @@ class ResultKTests: XCTestCase {
             ("testSample", testApplyOperator),
             ("testSample", testFailureCoalescingOperator),
             ("testSample", testPure),
-            ("testSample", testTryr),
             ("testSample", testSample),
         ]
     }
