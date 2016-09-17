@@ -13,16 +13,11 @@ case let .Failure(error):
 }
 ```
 
-`tryr` is also available to wrap values returned by throwable functions. It is similar to `try?` for `Optional`.
-
-```swift
-// let b: Result<Int> = tryr primeOrThrow(3)
-let b: Result<Int> = tryr(primeOrThrow)(3)
-```
-
 `Result` behaves as a _monad_. Operators are compatible to ones defined in [thoughtbot/Runes](https://github.com/thoughtbot/runes).
 
 ```swift
+let b: Result<Int> = Result(3)
+
 let sum1: Result<Int> = a.flatMap { a in b.map { b in a + b } }
 let sum2: Result<Int> = a >>- { a in  b >>- { b in  pure(a + b) } }
 let sum3: Result<Int> = curry(+) <^> a <*> b
@@ -31,6 +26,17 @@ let sum3: Result<Int> = curry(+) <^> a <*> b
 
 Installation
 ----------------------------
+
+### Swift Package Manager
+
+Add the following to `dependencies` in your _Package.swift_.
+
+```
+.Package(
+    url: "https://github.com/koher/ResultK.git",
+    majorVersion: 0
+)
+```
 
 ### Carthage
 
