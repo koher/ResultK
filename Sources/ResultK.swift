@@ -81,6 +81,21 @@ extension Result {
     }
 }
 
+extension Result: CustomStringConvertible, CustomDebugStringConvertible {
+    public var description: String {
+        switch self {
+        case let .success(value):
+            return "Result(\(value))"
+        case let .failure(error):
+            return "Result(error: \(error))"
+        }
+    }
+    
+    public var debugDescription: String {
+        return description
+    }
+}
+
 public func >>-<Value, U>(lhs: Result<Value>, rhs: (Value) -> Result<U>) -> Result<U> {
     return lhs.flatMap(rhs)
 }

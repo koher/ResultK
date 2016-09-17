@@ -287,7 +287,31 @@ class ResultKTests: XCTestCase {
             }
         }
     }
+    
+    func testDescription() {
+        do {
+            let a: Result<Int> = Result(2)
+            XCTAssertEqual(a.description, "Result(2)")
+        }
+        
+        do {
+            let a: Result<Int> = Result(error: MyError(message: "a"))
+            XCTAssertEqual(a.description, "Result(error: MyError(message: a))")
+        }
+    }
 
+    func testDebugDescription() {
+        do {
+            let a: Result<Int> = Result(2)
+            XCTAssertEqual(a.debugDescription, "Result(2)")
+        }
+        
+        do {
+            let a: Result<Int> = Result(error: MyError(message: "a"))
+            XCTAssertEqual(a.debugDescription, "Result(error: MyError(message: a))")
+        }
+    }
+    
     func testFlatMapLeftOperator() {
         do {
             let r: Result<Int> = Result(2) >>- { Result($0 * $0) }
@@ -522,6 +546,8 @@ class ResultKTests: XCTestCase {
             ("testFlatMap", testFlatMap),
             ("testApply", testApply),
             ("testRecovered", testRecovered),
+            ("testDescription", testDescription),
+            ("testDebugDescription", testDebugDescription),
             ("testFlatMapLeftOperator", testFlatMapLeftOperator),
             ("testFlatMapRightOperator", testFlatMapRightOperator),
             ("testMapOperator", testMapOperator),
@@ -539,7 +565,7 @@ private func failableGetInt(_ x: Int) throws -> Int {
     return x
 }
 
-private struct MyError: Error {
+private struct MyError: Error, CustomStringConvertible {
     let message: String
     
     init(message: String) {
@@ -548,6 +574,10 @@ private struct MyError: Error {
     
     init() {
         self.init(message: "")
+    }
+    
+    var description: String {
+        return "MyError(message: \(message))"
     }
 }
 
