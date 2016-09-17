@@ -27,6 +27,17 @@ let sum3: Result<Int> = curry(+) <^> a <*> b
 Installation
 ----------------------------
 
+### Swift Package Manager
+
+Add the following to `dependencies` in your _Package.swift_.
+
+```
+.Package(
+    url: "https://github.com/koher/ResultK.git",
+    majorVersion: 0
+)
+```
+
 ### Carthage
 
 [_Carthage_](https://github.com/Carthage/Carthage) is available to install _ResultK_. Add it to your _Cartfile_:
