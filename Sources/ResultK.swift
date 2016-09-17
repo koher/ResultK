@@ -89,7 +89,3 @@ public func <*><Value, U>(lhs: Result<(Value) -> U>, rhs: Result<Value>) -> Resu
 public func ??<Value>(lhs: Result<Value>, rhs: @autoclosure () -> Value) -> Value {
     return lhs.value ?? rhs()
 }
-
-public func pure<Value>(_ value: Value) -> Result<Value> {
-    return .success(value)
-}

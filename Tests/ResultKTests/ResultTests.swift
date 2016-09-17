@@ -158,7 +158,7 @@ class ResultKTests: XCTestCase {
     func testApply() {
         do {
             let a: Result<Int> = Result(2)
-            let r: Result<Int> = a.apply(pure({ $0 * $0 }))
+            let r: Result<Int> = a.apply(Result({ $0 * $0 }))
             switch r {
             case let .success(value):
                 XCTAssertEqual(value, 4)
@@ -182,7 +182,7 @@ class ResultKTests: XCTestCase {
         
         do {
             let a: Result<Int> = Result(error: MyError(message: "a"))
-            let r: Result<Int> = a.apply(pure({ $0 * $0 }))
+            let r: Result<Int> = a.apply(Result({ $0 * $0 }))
             switch r {
             case .success:
                 XCTFail()
@@ -388,7 +388,7 @@ class ResultKTests: XCTestCase {
         do {
             let a: Result<Int> = Result(2)
             let b: Result<Int> = Result(3)
-            let r: Result<Int> = pure(curry(+)) <*> a <*> b
+            let r: Result<Int> = Result(curry(+)) <*> a <*> b
             switch r {
             case let .success(value):
                 XCTAssertEqual(value, 5)
@@ -400,7 +400,7 @@ class ResultKTests: XCTestCase {
         do {
             let a: Result<Int> = Result(2)
             let b: Result<Int> = Result(error: MyError(message: "b"))
-            let r: Result<Int> = pure(curry(+)) <*> a <*> b
+            let r: Result<Int> = Result(curry(+)) <*> a <*> b
             switch r {
             case .success:
                 XCTFail()
@@ -414,7 +414,7 @@ class ResultKTests: XCTestCase {
         do {
             let a: Result<Int> = Result(error: MyError(message: "a"))
             let b: Result<Int> = Result(3)
-            let r: Result<Int> = pure(curry(+)) <*> a <*> b
+            let r: Result<Int> = Result(curry(+)) <*> a <*> b
             switch r {
             case .success:
                 XCTFail()
@@ -428,7 +428,7 @@ class ResultKTests: XCTestCase {
         do {
             let a: Result<Int> = Result(error: MyError(message: "a"))
             let b: Result<Int> = Result(error: MyError(message: "b"))
-            let r: Result<Int> = pure(curry(+)) <*> a <*> b
+            let r: Result<Int> = Result(curry(+)) <*> a <*> b
             switch r {
             case .success:
                 XCTFail()
@@ -454,18 +454,6 @@ class ResultKTests: XCTestCase {
         }
     }
     
-    func testPure() {
-        do {
-            let r: Result<Int> = pure(2)
-            switch r {
-            case let .success(value):
-                XCTAssertEqual(value, 2)
-            case .failure:
-                XCTFail()
-            }
-        }
-    }
-
     func testSample() {
         func primeOrFailure(_ x: Int) -> Result<Int> {
             guard [2, 3, 5, 7, 11].contains(x) else {
@@ -491,7 +479,7 @@ class ResultKTests: XCTestCase {
         let b: Result<Int> = Result(3)
         
         let sum1: Result<Int> = a.flatMap { a in b.map { b in a + b } }
-        let sum2: Result<Int> = a >>- { a in  b >>- { b in  pure(a + b) } }
+        let sum2: Result<Int> = a >>- { a in  b >>- { b in  Result(a + b) } }
         let sum3: Result<Int> = curry(+) <^> a <*> b
         
         print(sum1)
@@ -514,7 +502,6 @@ class ResultKTests: XCTestCase {
             ("testSample", testMapOperator),
             ("testSample", testApplyOperator),
             ("testSample", testFailureCoalescingOperator),
-            ("testSample", testPure),
             ("testSample", testSample),
         ]
     }
