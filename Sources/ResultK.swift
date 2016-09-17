@@ -36,6 +36,17 @@ extension Result {
 }
 
 extension Result {
+    public func unwrapped() throws -> Value {
+        switch self {
+        case let .success(value):
+            return value
+        case let .failure(error):
+            throw error
+        }
+    }
+}
+
+extension Result {
     public func map<U>(_ f: (Value) -> U) -> Result<U> {
         switch self {
         case let .success(value):

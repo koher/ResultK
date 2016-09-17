@@ -83,6 +83,30 @@ class ResultKTests: XCTestCase {
         }
     }
     
+    func testUnwrapped() {
+        do {
+            let r: Result<Int> = Result(2)
+            do {
+                let value = try r.unwrapped()
+                XCTAssertEqual(value, 2)
+            } catch {
+                XCTFail()
+            }
+        }
+        
+        do {
+            let r: Result<Int> = Result(error: MyError(message: "a"))
+            do {
+                _ = try r.unwrapped()
+                XCTFail()
+            } catch let error as MyError {
+                XCTAssertEqual(error.message, "a")
+            } catch  {
+                XCTFail()
+            }
+        }
+    }
+    
     func testMap() {
         do {
             let r: Result<Int> = Result(2).map { $0 * $0 }
@@ -493,6 +517,7 @@ class ResultKTests: XCTestCase {
             ("testSample", testInitError),
             ("testSample", testValue),
             ("testSample", testError),
+            ("testUnwrapped", testUnwrapped),
             ("testSample", testMap),
             ("testSample", testFlatMap),
             ("testSample", testApply),
