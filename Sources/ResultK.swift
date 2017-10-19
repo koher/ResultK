@@ -48,9 +48,7 @@ extension Result {
             throw error
         }
     }
-}
-
-extension Result {
+    
     public func map<U>(_ f: (Value) -> U) -> Result<U> {
         switch self {
         case let .success(value):
