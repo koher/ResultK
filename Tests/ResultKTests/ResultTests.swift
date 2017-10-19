@@ -296,8 +296,7 @@ class ResultKTests: XCTestCase {
         }
         
         let b: Result<Int> = Result(3)
-        
-        let sum: Result<Int> = a.flatMap { a in b.map { b in a + b } }
+        let sum: Result<Int> = a.flatMap { a in b.map { b in a + b } } // Result(5)
         
         print(sum)
         
