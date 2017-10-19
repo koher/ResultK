@@ -30,7 +30,7 @@
 		__PBXFileRef_Sources/ResultK.swift /* ResultK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultK.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Tests/ResultKTests/ResultKTests.swift /* ResultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTests.swift; sourceTree = "<group>"; };
 		"_____Product_ResultK" /* ResultK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ResultK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		"_____Product_ResultKTests" /* ResultKTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = ResultKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_ResultKTests" /* ResultKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = ResultKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +166,14 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 9999;
+				TargetAttributes = {
+					"______Target_ResultK" = {
+						LastSwiftMigration = 0900;
+					};
+					"______Target_ResultKTests" = {
+						LastSwiftMigration = 0900;
+					};
+				};
 			};
 			buildConfigurationList = "___RootConfs_" /* Build configuration list for PBXProject "ResultK" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -226,7 +234,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ResultK;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -239,7 +247,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -256,7 +264,7 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -270,7 +278,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
