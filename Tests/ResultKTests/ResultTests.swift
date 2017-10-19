@@ -178,59 +178,6 @@ class ResultKTests: XCTestCase {
             }
         }
     }
-    
-    func testApply() {
-        do {
-            let a: Result<Int> = Result(2)
-            let r: Result<Int> = a.apply(Result({ $0 * $0 }))
-            switch r {
-            case let .success(value):
-                XCTAssertEqual(value, 4)
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        do {
-            let a: Result<Int> = Result(2)
-            let r: Result<Int> = a.apply(Result(error: MyError(message: "f")))
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "f")
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        do {
-            let a: Result<Int> = Result(error: MyError(message: "a"))
-            let r: Result<Int> = a.apply(Result({ $0 * $0 }))
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "a")
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        
-        do {
-            let a: Result<Int> = Result(error: MyError(message: "a"))
-            let r: Result<Int> = a.apply(Result(error: MyError(message: "f")))
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "f")
-            case .failure:
-                XCTFail()
-            }
-        }
-    }
 
     func testRecovered() {
         do {
@@ -366,7 +313,6 @@ class ResultKTests: XCTestCase {
             ("testGet", testGet),
             ("testMap", testMap),
             ("testFlatMap", testFlatMap),
-            ("testApply", testApply),
             ("testRecovered", testRecovered),
             ("testDescription", testDescription),
             ("testDebugDescription", testDebugDescription),

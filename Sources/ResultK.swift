@@ -68,10 +68,6 @@ extension Result {
             return .failure(error)
         }
     }
-    
-    public func apply<U>(_ f: Result<(Value) -> U>) -> Result<U> {
-        return f.flatMap { f in self.map { f($0) } }
-    }
 }
 
 extension Result {
