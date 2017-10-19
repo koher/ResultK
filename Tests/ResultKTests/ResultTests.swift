@@ -311,182 +311,6 @@ class ResultKTests: XCTestCase {
             XCTAssertEqual(a.debugDescription, "Result(error: MyError(message: a))")
         }
     }
-    
-    func testFlatMapLeftOperator() {
-        do {
-            let r: Result<Int> = Result(2) >>- { Result($0 * $0) }
-            switch r {
-            case let .success(value):
-                XCTAssertEqual(value, 4)
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        do {
-            let r: Result<Int> = Result(2) >>- { _ in Result(error: MyError(message: "b")) }
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "b")
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        do {
-            let r: Result<Int> = Result(error: MyError(message:  "a")) >>- { Result($0 * $0) }
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "a")
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        do {
-            let r: Result<Int> = Result<Int>(error: MyError(message: "a")) >>- { _ in Result(error: MyError(message: "b:")) }
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "a")
-            case .failure:
-                XCTFail()
-            }
-        }
-    }
-    
-    func testFlatMapRightOperator() {
-        do {
-            let r: Result<Int> = { Result($0 * $0) } -<< Result(2)
-            switch r {
-            case let .success(value):
-                XCTAssertEqual(value, 4)
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        do {
-            let r: Result<Int> = { _ in Result(error: MyError(message: "b")) } -<< Result(2)
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "b")
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        do {
-            let r: Result<Int> = { Result($0 * $0) } -<< Result(error: MyError(message:  "a"))
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "a")
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        do {
-            let r: Result<Int> = { _ in Result(error: MyError(message: "b:")) } -<< Result<Int>(error: MyError(message: "a"))
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "a")
-            case .failure:
-                XCTFail()
-            }
-        }
-    }
-    
-    func testMapOperator() {
-        do {
-            let r: Result<Int> = { $0 * $0 } <^> Result(2)
-            switch r {
-            case let .success(value):
-                XCTAssertEqual(value, 4)
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        do {
-            let r: Result<Int> = { $0 * $0 } <^> Result(error: MyError(message: "a"))
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "a")
-            case .failure:
-                XCTFail()
-            }
-        }
-    }
-    
-    func testApplyOperator() {
-        do {
-            let a: Result<Int> = Result(2)
-            let b: Result<Int> = Result(3)
-            let r: Result<Int> = Result(curry(+)) <*> a <*> b
-            switch r {
-            case let .success(value):
-                XCTAssertEqual(value, 5)
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        do {
-            let a: Result<Int> = Result(2)
-            let b: Result<Int> = Result(error: MyError(message: "b"))
-            let r: Result<Int> = Result(curry(+)) <*> a <*> b
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "b")
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        do {
-            let a: Result<Int> = Result(error: MyError(message: "a"))
-            let b: Result<Int> = Result(3)
-            let r: Result<Int> = Result(curry(+)) <*> a <*> b
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "a")
-            case .failure:
-                XCTFail()
-            }
-        }
-        
-        do {
-            let a: Result<Int> = Result(error: MyError(message: "a"))
-            let b: Result<Int> = Result(error: MyError(message: "b"))
-            let r: Result<Int> = Result(curry(+)) <*> a <*> b
-            switch r {
-            case .success:
-                XCTFail()
-            case let .failure(error as MyError):
-                XCTAssertEqual(error.message, "a")
-            case .failure:
-                XCTFail()
-            }
-        }
-    }
 
     func testFailureCoalescingOperator() {
         do {
@@ -526,13 +350,11 @@ class ResultKTests: XCTestCase {
         
         let b: Result<Int> = Result(3)
         
-        let sum1: Result<Int> = a.flatMap { a in b.map { b in a + b } }
-        let sum2: Result<Int> = a >>- { a in  b >>- { b in  Result(a + b) } }
-        let sum3: Result<Int> = curry(+) <^> a <*> b
+        let sum: Result<Int> = a.flatMap { a in b.map { b in a + b } }
         
-        print(sum1)
-        print(sum2)
-        print(sum3)
+        print(sum)
+        
+        XCTAssertEqual(sum.value!, 5)
     }
     
     static var allTests: [(String, (ResultKTests) -> () throws -> Void)] {
@@ -548,10 +370,6 @@ class ResultKTests: XCTestCase {
             ("testRecovered", testRecovered),
             ("testDescription", testDescription),
             ("testDebugDescription", testDebugDescription),
-            ("testFlatMapLeftOperator", testFlatMapLeftOperator),
-            ("testFlatMapRightOperator", testFlatMapRightOperator),
-            ("testMapOperator", testMapOperator),
-            ("testApplyOperator", testApplyOperator),
             ("testFailureCoalescingOperator", testFailureCoalescingOperator),
             ("testSample", testSample),
         ]

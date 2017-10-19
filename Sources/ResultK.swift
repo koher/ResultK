@@ -100,22 +100,6 @@ extension Result: CustomStringConvertible, CustomDebugStringConvertible {
     }
 }
 
-public func >>-<Value, U>(lhs: Result<Value>, rhs: (Value) -> Result<U>) -> Result<U> {
-    return lhs.flatMap(rhs)
-}
-
-public func -<<<Value, U>(lhs: (Value) -> Result<U>, rhs: Result<Value>) -> Result<U> {
-    return rhs.flatMap(lhs)
-}
-
-public func <^><Value, U>(lhs: (Value) -> U, rhs: Result<Value>) -> Result<U> {
-    return rhs.map(lhs)
-}
-
-public func <*><Value, U>(lhs: Result<(Value) -> U>, rhs: Result<Value>) -> Result<U> {
-    return rhs.apply(lhs)
-}
-
 public func ??<Value>(lhs: Result<Value>, rhs: @autoclosure () -> Value) -> Value {
     return lhs.value ?? rhs()
 }
