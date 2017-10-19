@@ -40,7 +40,7 @@ extension Result {
 }
 
 extension Result {
-    public func unwrapped() throws -> Value {
+    public func get() throws -> Value {
         switch self {
         case let .success(value):
             return value

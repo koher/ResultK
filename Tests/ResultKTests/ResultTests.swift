@@ -83,11 +83,11 @@ class ResultKTests: XCTestCase {
         }
     }
     
-    func testUnwrapped() {
+    func testGet() {
         do {
             let r: Result<Int> = Result(2)
             do {
-                let value = try r.unwrapped()
+                let value = try r.get()
                 XCTAssertEqual(value, 2)
             } catch {
                 XCTFail()
@@ -97,7 +97,7 @@ class ResultKTests: XCTestCase {
         do {
             let r: Result<Int> = Result(error: MyError(message: "a"))
             do {
-                _ = try r.unwrapped()
+                _ = try r.get()
                 XCTFail()
             } catch let error as MyError {
                 XCTAssertEqual(error.message, "a")
@@ -541,7 +541,7 @@ class ResultKTests: XCTestCase {
             ("testInitError", testInitError),
             ("testValue", testValue),
             ("testError", testError),
-            ("testUnwrapped", testUnwrapped),
+            ("testGet", testGet),
             ("testMap", testMap),
             ("testFlatMap", testFlatMap),
             ("testApply", testApply),
