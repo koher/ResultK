@@ -4,16 +4,20 @@ public enum Result<Value> {
 }
 
 extension Result {
-    public init(_ f: @autoclosure () throws -> Value) {
-        do {
-            self = .success(try f())
-        } catch let error {
-            self = .failure(error)
-        }
+    public init(_ value: Value) {
+        self = .success(value)
     }
     
     public init(error: Error) {
         self = .failure(error)
+    }
+    
+    public init(_ value: () throws -> Value) {
+        do {
+            self = .success(try value())
+        } catch let error {
+            self = .failure(error)
+        }
     }
     
     public var value: Value? {

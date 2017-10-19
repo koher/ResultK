@@ -14,7 +14,7 @@ class ResultKTests: XCTestCase {
         }
         
         do {
-            let r: Result<Int> = Result(try failableGetInt(2))
+            let r: Result<Int> = Result { try failableGetInt(2) }
             switch r {
             case let .success(value):
                 XCTAssertEqual(value, 2)
@@ -24,7 +24,7 @@ class ResultKTests: XCTestCase {
         }
         
         do {
-            let r: Result<Int> = Result(try failableGetInt(3))
+            let r: Result<Int> = Result { try failableGetInt(3) }
             switch r {
             case .success:
                 XCTFail()
@@ -516,7 +516,7 @@ class ResultKTests: XCTestCase {
             return x
         }
         
-        let a: Result<Int> = Result(try primeOrThrow(2))
+        let a: Result<Int> = Result { try primeOrThrow(2) }
         switch a {
         case let .success(value):
             print(value)
