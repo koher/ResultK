@@ -49,19 +49,19 @@ extension Result {
         }
     }
     
-    public func map<U>(_ f: (Value) -> U) -> Result<U> {
+    public func map<U>(_ transform: (Value) throws -> U) rethrows -> Result<U> {
         switch self {
         case let .success(value):
-            return .success(f(value))
+            return .success(try transform(value))
         case let .failure(error):
             return .failure(error)
         }
     }
     
-    public func flatMap<U>(_ f: (Value) -> Result<U>) -> Result<U> {
+    public func flatMap<U>(_ transform: (Value) throws -> Result<U>) rethrows -> Result<U> {
         switch self {
         case let .success(value):
-            return f(value)
+            return try transform(value)
         case let .failure(error):
             return .failure(error)
         }
@@ -69,12 +69,12 @@ extension Result {
 }
 
 extension Result {
-    public func recovered(_ f: (Error) -> Result<Value>) -> Result<Value> {
+    public func recovered(_ transform: (Error) throws -> Result<Value>) rethrows -> Result<Value> {
         switch self {
         case .success:
             return self
         case let .failure(error):
-            return f(error)
+            return try transform(error)
         }
     }
 }
