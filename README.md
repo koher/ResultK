@@ -1,5 +1,7 @@
 # ResultK
 
+[![Build Status](https://travis-ci.org/koher/ResultK.svg?branch=master)](https://travis-ci.org/koher/ResultK)
+
 _ResultK_ provides `Result` suitable to Swift's untyped `throws`. _ResultK_'s `Result` type does not have the second type parameter to specify the error type unlike [antitypical/Result](https://github.com/antitypical/Result).
 
 ```swift
